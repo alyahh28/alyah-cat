@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="primaryColor">#3E97FF</color>
+    <color name="abu_gelap">#424242</color>
+    <color name="biru_laut">#0B4676</color>
+    <color name="biru_muda">#A5CFEB</color>
 </resources>
