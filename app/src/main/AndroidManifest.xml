@@ -12,36 +12,48 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Alyahcat"
         tools:targetApi="31">
+
         <activity
-            android:name=".pertemuan_2.KalkulatorActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AuthActivity"
-            android:exported="false" />
-        <activity
-            android:name=".pertemuan_3.LoginActivity"
+            android:name=".SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".pertemuan_3.LoginActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".pertemuan_2.KalkulatorActivity"
+            android:exported="false" />
+
         <activity
             android:name=".pertemuan_4.DashboardActivity"
             android:exported="false" />
+
         <activity
             android:name=".pertemuan_4.Custom1Activity"
             android:exported="false" />
+
         <activity
             android:name=".pertemuan_4.Custom2Activity"
             android:exported="false" />
+
         <activity
             android:name=".pertemuan_3.WelcomeActivity"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".AuthActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
