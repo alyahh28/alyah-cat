@@ -6,4 +6,13 @@
     <color name="abu_gelap">#424242</color>
     <color name="biru_laut">#0B4676</color>
     <color name="biru_muda">#A5CFEB</color>
+    <color name="red">#FF0000</color>
+    <color name="lib_primary">#6F9CE2</color>
+    <color name="lib_background">#F8FAFC</color>
+    <color name="lib_text_main">#1E293B</color>
+    <color name="lib_text_sub">#64748B</color>
+    <color name="lib_red">#E11D48</color>
+    <color name="primary_medical">#2D79E6</color>
+    <color name="red_logout">#8C0A00</color>
+
 </resources>

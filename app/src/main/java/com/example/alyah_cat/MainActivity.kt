@@ -1,90 +1,113 @@
 package com.example.alyah_cat
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
+import android.util.Log
+import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.alyah_cat.pertemuan_4.Custom1Activity
+import com.example.alyah_cat.pertemuan_4.Custom2Activity
+import com.example.alyah_cat.databinding.ActivityMainBinding
+import com.example.alyah_cat.pertemuan_2.KalkulatorActivity
+import com.example.alyah_cat.pertemuan_3.LoginActivity
+//import com.example.alyah_cat.pertemuan_6.WebViewActivity
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var etAlas: EditText
-    private lateinit var etTinggi: EditText
-    private lateinit var etSisi: EditText
-    private lateinit var tvHasilDatar: TextView
-    private lateinit var tvHasilRuang: TextView
+    private lateinit var binding: ActivityMainBinding
+    private val TAG = "alyahcat"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_scrollview)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.apply {
+            title = " Halaman Utama"
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
         }
 
-        etAlas = findViewById(R.id.etAlas)
-        etTinggi = findViewById(R.id.etTinggi)
-        etSisi = findViewById(R.id.etSisi)
-        tvHasilDatar = findViewById(R.id.tvHasilDatar)
-        tvHasilRuang = findViewById(R.id.tvHasilRuang)
+        Log.d(TAG, "onCreate: MainActivity dimulai")
 
-        val btnLuas = findViewById<Button>(R.id.btnHitungDatar)
-        val btnVolume = findViewById<Button>(R.id.btnHitungRuang)
+        // Tombol 1: ke halaman rumus (SecondActivity di tugasp2)
+        binding.btnKalkulator.setOnClickListener {
+            Log.d(TAG, "btnRumus diklik")
+            val intent = Intent(this, KalkulatorActivity::class.java)
+            intent.putExtra("JUDUL", "Kalkulator Bangun Ruang")
+            intent.putExtra("DESKRIPSI", "Hitung luas segitiga dan volume kubus")
+            startActivity(intent)
+        }
 
-        btnLuas.setOnClickListener {
-            val alas = etAlas.text.toString()
-            val tinggi = etTinggi.text.toString()
+        // Tombol 2: ke halaman custom 1
+        binding.btnCustom1.setOnClickListener {
+            Log.d(TAG, "btnCustom1 diklik")
+            val intent = Intent(this, Custom1Activity::class.java)
+            intent.putExtra("JUDUL", "Selamat Datang di Halaman  1")
+            intent.putExtra("DESKRIPSI", "Halaman pertama dengan gambar")
+            startActivity(intent)
+        }
+        //Kode ini harus selalu dipanggil saat butuh akses "user_pref"
+        val sharedPref = getSharedPreferences("user_pref", MODE_PRIVATE)
 
-            if (alas.isNotEmpty() && tinggi.isNotEmpty()) {
-                val hasil = 0.5 * alas.toDouble() * tinggi.toDouble()
-                tvHasilDatar.text = "Hasil Luas: $hasil"
-                tutupKeyboard()
-                hapusFokus()
-            } else {
-                Toast.makeText(this, "Alas dan Tinggi harus diisi!", Toast.LENGTH_SHORT).show()
+
+        // Tombol 3: ke halaman custom 2
+        binding.btnCustom2.setOnClickListener {
+            Log.d(TAG, "btnCustom2 diklik")
+            val intent = Intent(this, Custom2Activity::class.java)
+            intent.putExtra("JUDUL", "Selamat Datang di Halaman  2")
+            intent.putExtra("DESKRIPSI", "Halaman kedua dengan gambar")
+            startActivity(intent)
+        }
+//        binding.btnWebView.setOnClickListener {
+//            val intent = Intent(this, WebViewActivity::class.java)
+//            startActivity(intent)
+//        }
+
+        // Tombol 4: Logout ke LoginActivity
+        binding.btnLogout.setOnClickListener {
+            Log.d(TAG, "btnLogout diklik")
+            AlertDialog.Builder(this).apply {
+                setTitle("Konfirmasi Logout")
+                setMessage("Apakah Anda yakin ingin keluar?")
+                setPositiveButton("Ya") { _, _ ->
+                    val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                }
+                setNegativeButton("Tidak") { _, _ ->
+                    Snackbar.make(binding.root, "Logout dibatalkan", Snackbar.LENGTH_SHORT).show()
+                }
+                show()
             }
+
         }
 
-        btnVolume.setOnClickListener {
-            val sisi = etSisi.text.toString()
-
-            if (sisi.isNotEmpty()) {
-                val s = sisi.toDouble()
-                val hasil = s * s * s
-                tvHasilRuang.text = "Hasil Volume: $hasil"
-                tutupKeyboard()
-                hapusFokus()
-            } else {
-                etSisi.error = "Sisi kosong!"
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressedDispatcher.onBackPressed()
+                true
             }
-        }
 
-        findViewById<android.view.View>(R.id.main_scrollview).setOnClickListener {
-            tutupKeyboard()
-            hapusFokus()
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun tutupKeyboard() {
-        val view = this.currentFocus
-        if (view != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-    }
-
-    private fun hapusFokus() {
-        etAlas.clearFocus()
-        etTinggi.clearFocus()
-        etSisi.clearFocus()
-    }
+    override fun onStart()
+    { super.onStart(); Log.d(TAG, "onStart") }
+    override fun onResume()
+    { super.onResume(); Log.d(TAG, "onResume") }
+    override fun onPause()
+    { super.onPause(); Log.d(TAG, "onPause") }
+    override fun onStop()
+    { super.onStop(); Log.d(TAG, "onStop") }
+    override fun onDestroy()
+    { super.onDestroy(); Log.d(TAG, "onDestroy") }
 }
