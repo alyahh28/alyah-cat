@@ -15,4 +15,20 @@
     <color name="primary_medical">#2D79E6</color>
     <color name="red_logout">#8C0A00</color>
 
+    <color name="desa_primary">#0B4676</color>
+    <color name="desa_secondary">#3E97FF</color>
+    <color name="desa_background">#F8FAFC</color>
+    <color name="desaa_primary">#2E7D32</color>
+    <color name="desa_primary_variant">#1B5E20</color>
+    <color name="desa_accent">#81C784</color>
+    <color name="desaa_background">#F1F8E9</color>
+    <color name="text_main">#212121</color>
+    <color name="text_sub">#757575</color>
+
+    <color name="profile_header_start">#4facfe</color>
+    <color name="profile_header_end">#00f2fe</color>
+    <color name="profile_bg_light">#F4F7FF</color>
+    <color name="profile_card_bg">#E3F2FD</color>
+    <color name="profile_icon_tint">#1976D2</color>
+
 </resources>

@@ -1,13 +1,12 @@
-package com.example.alyah_cat.pertemuan_3
+package com.example.alyah_cat.Home.pertemuan_3
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alyah_cat.R
-import com.example.alyah_cat.pertemuan_4.DashboardActivity
+import com.example.alyah_cat.Home.pertemuan_4.DashboardActivity
 import com.google.android.material.button.MaterialButton
 
 class LoginActivity : AppCompatActivity() {
@@ -17,7 +16,7 @@ class LoginActivity : AppCompatActivity() {
         // Langsung tampilkan layout karena pengecekan sudah di Splash Screen
         setContentView(R.layout.activity_login)
 
-        val sharedPref = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
+        val sharedPref = getSharedPreferences("user_pref", MODE_PRIVATE)
         val btnLogin = findViewById<MaterialButton>(R.id.btn_login)
         val etUsername = findViewById<EditText>(R.id.et_username)
         val etPassword = findViewById<EditText>(R.id.et_password)

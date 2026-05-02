@@ -1,4 +1,4 @@
-package com.example.alyah_cat.pertemuan_2
+package com.example.alyah_cat.Home.pertemuan_2
 
 import android.os.Bundle
 import android.widget.Button

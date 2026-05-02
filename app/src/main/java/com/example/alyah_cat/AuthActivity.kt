@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.alyah_cat.databinding.ActivityLoginBinding
-import com.example.alyah_cat.pertemuan_4.DashboardActivity
+import com.example.alyah_cat.Home.pertemuan_4.DashboardActivity
 import com.google.android.material.snackbar.Snackbar
 
 class AuthActivity : AppCompatActivity() {

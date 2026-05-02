@@ -1,113 +1,69 @@
 package com.example.alyah_cat
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.alyah_cat.pertemuan_4.Custom1Activity
-import com.example.alyah_cat.pertemuan_4.Custom2Activity
 import com.example.alyah_cat.databinding.ActivityMainBinding
-import com.example.alyah_cat.pertemuan_2.KalkulatorActivity
-import com.example.alyah_cat.pertemuan_3.LoginActivity
-//import com.example.alyah_cat.pertemuan_6.WebViewActivity
-import com.google.android.material.snackbar.Snackbar
+import com.example.alyah_cat.Home.pertemuan_2.KalkulatorActivity
+import com.example.alyah_cat.Home.pertemuan_3.LoginActivity
+import com.example.alyah_cat.Home.pertemuan_4.Custom1Activity
+import com.example.alyah_cat.Home.pertemuan_4.WebViewActivity
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val TAG = "alyahcat"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Setup Toolbar
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.apply {
-            title = " Halaman Utama"
-            setDisplayHomeAsUpEnabled(true)
-            setDisplayShowHomeEnabled(true)
-        }
+        supportActionBar?.title = "Dashboard Bina Desa"
 
-        Log.d(TAG, "onCreate: MainActivity dimulai")
-
-        // Tombol 1: ke halaman rumus (SecondActivity di tugasp2)
-        binding.btnKalkulator.setOnClickListener {
-            Log.d(TAG, "btnRumus diklik")
-            val intent = Intent(this, KalkulatorActivity::class.java)
-            intent.putExtra("JUDUL", "Kalkulator Bangun Ruang")
-            intent.putExtra("DESKRIPSI", "Hitung luas segitiga dan volume kubus")
-            startActivity(intent)
-        }
-
-        // Tombol 2: ke halaman custom 1
-        binding.btnCustom1.setOnClickListener {
-            Log.d(TAG, "btnCustom1 diklik")
+        // 1. Tombol Profil Desa (Custom1Activity)
+        binding.btnProfilDesa.setOnClickListener {
             val intent = Intent(this, Custom1Activity::class.java)
-            intent.putExtra("JUDUL", "Selamat Datang di Halaman  1")
-            intent.putExtra("DESKRIPSI", "Halaman pertama dengan gambar")
+            // Mengirim data agar halaman profil tidak kosong
+            intent.putExtra("EXTRA_JUDUL", "Profil Bina Desa")
+            intent.putExtra("EXTRA_DESC", "Program digitalisasi desa untuk meningkatkan efisiensi pelayanan publik dan pemberdayaan masyarakat lokal.")
             startActivity(intent)
         }
-        //Kode ini harus selalu dipanggil saat butuh akses "user_pref"
-        val sharedPref = getSharedPreferences("user_pref", MODE_PRIVATE)
 
-
-        // Tombol 3: ke halaman custom 2
-        binding.btnCustom2.setOnClickListener {
-            Log.d(TAG, "btnCustom2 diklik")
-            val intent = Intent(this, Custom2Activity::class.java)
-            intent.putExtra("JUDUL", "Selamat Datang di Halaman  2")
-            intent.putExtra("DESKRIPSI", "Halaman kedua dengan gambar")
-            startActivity(intent)
+        // 2. Tombol Web View (Tugas Pertemuan 6)
+        binding.btnWebView.setOnClickListener {
+            startActivity(Intent(this, WebViewActivity::class.java))
         }
-//        binding.btnWebView.setOnClickListener {
-//            val intent = Intent(this, WebViewActivity::class.java)
-//            startActivity(intent)
-//        }
 
-        // Tombol 4: Logout ke LoginActivity
+        // 3. Tombol Kalkulator (Tugas Pertemuan 2)
+        binding.btnKalkulator.setOnClickListener {
+            startActivity(Intent(this, KalkulatorActivity::class.java))
+        }
+
+        // 4. Tombol Logout (Menghapus Sesi)
         binding.btnLogout.setOnClickListener {
-            Log.d(TAG, "btnLogout diklik")
-            AlertDialog.Builder(this).apply {
-                setTitle("Konfirmasi Logout")
-                setMessage("Apakah Anda yakin ingin keluar?")
-                setPositiveButton("Ya") { _, _ ->
-                    val intent = Intent(this@MainActivity, LoginActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                    finish()
-                }
-                setNegativeButton("Tidak") { _, _ ->
-                    Snackbar.make(binding.root, "Logout dibatalkan", Snackbar.LENGTH_SHORT).show()
-                }
-                show()
-            }
-
-        }
-
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressedDispatcher.onBackPressed()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
+            showLogoutDialog()
         }
     }
 
-    override fun onStart()
-    { super.onStart(); Log.d(TAG, "onStart") }
-    override fun onResume()
-    { super.onResume(); Log.d(TAG, "onResume") }
-    override fun onPause()
-    { super.onPause(); Log.d(TAG, "onPause") }
-    override fun onStop()
-    { super.onStop(); Log.d(TAG, "onStop") }
-    override fun onDestroy()
-    { super.onDestroy(); Log.d(TAG, "onDestroy") }
+    private fun showLogoutDialog() {
+        AlertDialog.Builder(this).apply {
+            setTitle("Konfirmasi Logout")
+            setMessage("Apakah Anda yakin ingin keluar dari aplikasi?")
+            setPositiveButton("Ya") { _, _ ->
+                val sharedPref = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
+                sharedPref.edit().clear().apply() // Hapus isLogin
+
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            }
+            setNegativeButton("Tidak", null)
+            show()
+        }
+    }
 }

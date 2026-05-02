@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme.Alyahcat" parent="Base.Theme.Alyahcat" />
+    <style name="RoundedSquare" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+    </style>
 </resources>

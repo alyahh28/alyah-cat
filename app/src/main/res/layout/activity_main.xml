@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5"
-    tools:context=".pertemuan_4.MainActivity">
+    tools:context=".MainActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -94,13 +94,13 @@
                 app:layout_constraintTop_toBottomOf="@id/cardRumus">
 
                 <Button
-                    android:id="@+id/btnCustom1"
+                    android:id="@+id/btnProfilDesa"
                     style="@style/Widget.Material3.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/lib_primary"
                     android:padding="16dp"
-                    android:text=" Halaman 1"
+                    android:text="Profile"
                     android:textSize="16sp" />
 
             </com.google.android.material.card.MaterialCardView>
