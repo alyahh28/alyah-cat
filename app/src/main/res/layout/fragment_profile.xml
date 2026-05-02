@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="40dp">
 
+
         <View
             android:id="@+id/headerBackground"
             android:layout_width="match_parent"
