@@ -26,8 +26,9 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set Toolbar
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = "Profil Mahasiswa"
+        // Daftarkan toolbar agar muncul
+        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = "Profile"
 
         // Logika Klik Button Sosial Media
         binding.btnInstagram.setOnClickListener {

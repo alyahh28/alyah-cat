@@ -14,8 +14,10 @@ class AboutFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
+
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View {
         _binding = FragmentAboutBinding.inflate(inflater, container, false)
         return binding.root
@@ -24,10 +26,9 @@ class AboutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Mengatur judul pada Toolbar Activity Utama saat Fragment ini aktif
-        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
-            title = "Tentang Website"
-        }
+        // Daftarkan toolbar agar muncul
+        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = "About"
     }
 
     override fun onDestroyView() {

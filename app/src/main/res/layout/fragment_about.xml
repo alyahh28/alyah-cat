@@ -12,12 +12,22 @@
         android:layout_height="wrap_content"
         android:paddingBottom="32dp">
 
+        <!-- Tambahkan ini di dalam ConstraintLayout, sebelum viewHeader -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:titleTextColor="@android:color/white"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Sesuaikan viewHeader agar berada di bawah toolbar -->
         <View
             android:id="@+id/viewHeader"
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:background="@color/lib_primary"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <ImageView
             android:id="@+id/imgLogo"
