@@ -14,5 +14,9 @@
         android:id="@+id/profile"
         android:icon="@drawable/ic_profile"
         android:title="Profile" />
+    <item
+        android:id="@+id/message"
+        android:icon="@drawable/ic_message"
+        android:title="Profile" />
 
 </menu>

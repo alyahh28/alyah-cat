@@ -14,9 +14,9 @@ import com.example.alyah_cat.Home.pertemuan_3.LoginActivity
 import com.example.alyah_cat.Home.pertemuan_4.Custom1Activity
 import com.example.alyah_cat.Home.pertemuan_4.Custom2Activity
 import com.example.alyah_cat.Home.pertemuan_4.WebViewActivity
+import com.example.alyah_cat.Home.pertemuan_8.DelpanActivity
 import com.example.alyah_cat.R
 import com.example.alyah_cat.databinding.FragmentHomeBinding
-
 
 class HomeFragment : Fragment() {
 
@@ -34,17 +34,17 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Setup Toolbar sesuai instruksi (Casting ke AppCompatActivity)
+        // 1. Setup Toolbar
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
         (requireActivity() as AppCompatActivity).supportActionBar?.apply {
-            title = "Home"
+            title = "Dashboard Desa"
         }
 
-        // 2. Logika Navigasi ke Activity lain (Gunakan requireContext())
+        // 2. Navigasi menggunakan Card Click Listener
         binding.btnkalkulator.setOnClickListener {
             val intent = Intent(requireContext(), KalkulatorActivity::class.java)
             intent.putExtra("judul", "Pertemuan 2")
-            intent.putExtra("description", "Deskripsi materi yang dibahas saat Pertemuan 2")
+            intent.putExtra("description", "Materi Kalkulator Bangun Ruang")
             startActivity(intent)
         }
 
@@ -60,6 +60,10 @@ class HomeFragment : Fragment() {
             startActivity(Intent(requireContext(), WebViewActivity::class.java))
         }
 
+        binding.btnP9.setOnClickListener {
+            startActivity(Intent(requireContext(), DelpanActivity::class.java))
+        }
+
         // 3. Logika Logout
         binding.btnLogout.setOnClickListener {
             showLogoutDialog()
@@ -71,16 +75,12 @@ class HomeFragment : Fragment() {
             .setTitle("Logout")
             .setMessage("Apakah Anda yakin ingin keluar?")
             .setPositiveButton("Ya") { _, _ ->
-                // Hapus Session SharedPreferences
                 val sharedPref = requireContext().getSharedPreferences("USER_PREF", Context.MODE_PRIVATE)
                 sharedPref.edit().clear().apply()
 
-                // Pindah ke AuthActivity (Login) dan hapus backstack
                 val intent = Intent(requireContext(), LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
-
-                // Tutup Activity utama sesuai instruksi gambar
                 requireActivity().finish()
             }
             .setNegativeButton("Tidak", null)
@@ -89,6 +89,6 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Menghindari memory leak
+        _binding = null
     }
 }

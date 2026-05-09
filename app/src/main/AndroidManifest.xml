@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Alyahcat"
         tools:targetApi="31">
         <activity
+            android:name=".Home.pertemuan_8.DelpanActivity"
+            android:exported="false" />
+        <activity
             android:name=".BaseActivity"
             android:exported="false" />
         <activity

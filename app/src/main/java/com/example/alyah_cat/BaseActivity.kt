@@ -1,4 +1,4 @@
-package com.example.alyah_cat // 1. Sesuaikan dengan namespace project Anda
+package com.example.alyah_cat
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -8,10 +8,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.alyah_cat.About.AboutFragment
 import com.example.alyah_cat.Home.HomeFragment
+import com.example.alyah_cat.Message.MessageFragment
 import com.example.alyah_cat.Profile.ProfileFragment
 import com.example.alyah_cat.databinding.ActivityBaseBinding
-// 2. Hapus import androidx.activity.R
-// 3. Import R dari package project Anda sendiri
 import com.example.alyah_cat.R
 
 class BaseActivity : AppCompatActivity() {
@@ -48,6 +47,10 @@ class BaseActivity : AppCompatActivity() {
                 }
                 R.id.profile -> {
                     replaceFragment(ProfileFragment())
+                    true
+                }
+                R.id.message -> {
+                    replaceFragment(MessageFragment())
                     true
                 }
                 else -> false
