@@ -15,6 +15,7 @@ import com.example.alyah_cat.Home.pertemuan_4.Custom1Activity
 import com.example.alyah_cat.Home.pertemuan_4.Custom2Activity
 import com.example.alyah_cat.Home.pertemuan_4.WebViewActivity
 import com.example.alyah_cat.Home.pertemuan_8.DelpanActivity
+import com.example.alyah_cat.Home.Message.MessageFragment // Update Package Baru
 import com.example.alyah_cat.R
 import com.example.alyah_cat.databinding.FragmentHomeBinding
 
@@ -34,33 +35,37 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Setup Toolbar
+        // 1. Setup Toolbar Dashboard
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
-        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
-            title = "Dashboard Desa"
-        }
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = "Dashboard Bina Desa"
 
-        // 2. Navigasi menggunakan Card Click Listener
+        // 2. Navigasi Card Click Listener
+
+        // Kalkulator (Pertemuan 2)
         binding.btnkalkulator.setOnClickListener {
-            val intent = Intent(requireContext(), KalkulatorActivity::class.java)
-            intent.putExtra("judul", "Pertemuan 2")
-            intent.putExtra("description", "Materi Kalkulator Bangun Ruang")
-            startActivity(intent)
+            startActivity(Intent(requireContext(), KalkulatorActivity::class.java))
         }
 
+        // Profile (Pertemuan 4 - Custom 1)
         binding.btncustom1.setOnClickListener {
             startActivity(Intent(requireContext(), Custom1Activity::class.java))
         }
 
-        binding.btncustom2.setOnClickListener {
-            startActivity(Intent(requireContext(), Custom2Activity::class.java))
+        // Message -> Masuk ke MessageFragment (Folder Home.Message)
+        binding.btnMessage.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, MessageFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
+        // Web View (Pertemuan 4)
         binding.btnwebview.setOnClickListener {
             startActivity(Intent(requireContext(), WebViewActivity::class.java))
         }
 
-        binding.btnP9.setOnClickListener {
+        // Layanan Bina Desa -> Masuk ke DelpanActivity (Pertemuan 8)
+        binding.btnLayanan.setOnClickListener {
             startActivity(Intent(requireContext(), DelpanActivity::class.java))
         }
 
@@ -72,8 +77,8 @@ class HomeFragment : Fragment() {
 
     private fun showLogoutDialog() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Logout")
-            .setMessage("Apakah Anda yakin ingin keluar?")
+            .setTitle("Konfirmasi Logout")
+            .setMessage("Apakah Anda yakin ingin keluar dari layanan Bina Desa?")
             .setPositiveButton("Ya") { _, _ ->
                 val sharedPref = requireContext().getSharedPreferences("USER_PREF", Context.MODE_PRIVATE)
                 sharedPref.edit().clear().apply()
@@ -83,7 +88,7 @@ class HomeFragment : Fragment() {
                 startActivity(intent)
                 requireActivity().finish()
             }
-            .setNegativeButton("Tidak", null)
+            .setNegativeButton("Batal", null)
             .show()
     }
 

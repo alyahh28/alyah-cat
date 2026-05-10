@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="320dp"
         android:background="@drawable/bg_profile_header"
+
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

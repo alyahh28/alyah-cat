@@ -17,7 +17,7 @@
             android:id="@+id/viewHeader"
             android:layout_width="match_parent"
             android:layout_height="240dp"
-            android:background="#1976D2"
+            android:background="@drawable/bg_blue_gradient"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.Toolbar

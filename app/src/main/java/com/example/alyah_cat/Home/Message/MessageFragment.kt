@@ -1,10 +1,11 @@
-package com.example.alyah_cat.Message
+package com.example.alyah_cat.Home.Message
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity // Tambahkan import ini
 import com.example.alyah_cat.R
 import com.example.alyah_cat.databinding.FragmentMessageBinding
 
@@ -12,7 +13,7 @@ class MessageFragment : Fragment() {
     private var _binding: FragmentMessageBinding? = null
     private val binding get() = _binding!!
 
-    // Isi dengan data Bina Desa dan gambar dari drawable kamu
+    // Data pesan Bina Desa menggunakan icon yang tersedia di folder drawable Anda
     private val messageList = listOf(
         MessageModel("Admin Desa", "Laporan Infrastruktur Anda sedang diproses.", R.drawable.ic_admin),
         MessageModel("Pak Kades", "Terima kasih atas sarannya untuk pembangunan jalan.", R.drawable.ic_kades),
@@ -32,11 +33,16 @@ class MessageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Gunakan warna biru gradasi pada toolbar lewat XML-nya
-        binding.toolbar.title = "Pesan Bina Desa"
+        // 1. Setup Toolbar agar judul "Pesan Bina Desa" muncul di header
+        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = "Pesan Bina Desa"
 
+        // 2. Setup Adapter untuk ListView
         val adapter = MessageAdapter(requireContext(), messageList)
         binding.listMessageItems.adapter = adapter
+
+        // 3. Menghilangkan divider agar tampilan CardView lebih rapi (tidak ada garis di sela-sela)
+        binding.listMessageItems.divider = null
     }
 
     override fun onDestroyView() {

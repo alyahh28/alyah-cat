@@ -1,4 +1,4 @@
-package com.example.alyah_cat.Message
+package com.example.alyah_cat.Home.Message
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -15,15 +15,17 @@ class MessageAdapter(context: Context, private val dataSource: List<MessageModel
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_message, parent, false)
 
-        val item = dataSource[position]
+        val item = getItem(position)
 
         val imgAvatar = view.findViewById<ImageView>(R.id.imgAvatar)
         val tvName = view.findViewById<TextView>(R.id.tvSenderName)
         val tvMsg = view.findViewById<TextView>(R.id.tvMessageText)
 
-        tvName.text = item.senderName
-        tvMsg.text = item.messageText
-        imgAvatar.setImageResource(item.avatarResId) // Mengambil gambar dari drawable
+        item?.let {
+            tvName.text = it.senderName
+            tvMsg.text = it.messageText
+            imgAvatar.setImageResource(it.avatarResId)
+        }
 
         return view
     }
