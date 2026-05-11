@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Form Registrasi"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary_medical"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lengkapi data diri untuk mendaftar"
+            android:textColor="#64748B"
+            android:layout_marginBottom="32dp"/>
+
+        <EditText
+            android:id="@+id/et_reg_nama"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Nama Lengkap"
+            android:paddingStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_input_edittext" />
+
+        <EditText
+            android:id="@+id/et_reg_email"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:paddingStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_input_edittext" />
+
+        <EditText
+            android:id="@+id/et_reg_tgl"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Tanggal Lahir"
+            android:focusable="false"
+            android:clickable="true"
+            android:paddingStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_input_edittext" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jenis Kelamin"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            android:textColor="#1E293B"/>
+
+        <RadioGroup
+            android:id="@+id/rg_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+            <RadioButton
+                android:id="@+id/rb_laki"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Laki-laki"
+                android:layout_marginEnd="16dp"/>
+            <RadioButton
+                android:id="@+id/rb_perempuan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Perempuan" />
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/et_reg_username"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Username"
+            android:paddingStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_input_edittext" />
+
+        <EditText
+            android:id="@+id/et_reg_pass"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_input_edittext" />
+
+        <EditText
+            android:id="@+id/et_reg_confirm_pass"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/bg_input_edittext" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_selanjutnya"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Selanjutnya"
+            app:cornerRadius="12dp"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:backgroundTint="@color/primary_medical" />
+
+    </LinearLayout>
+</ScrollView>

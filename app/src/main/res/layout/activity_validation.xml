@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/desa_background"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Konfirmasi Data"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="@color/desa_primary"
+        android:layout_marginTop="32dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pastikan data di bawah ini sudah benar sebelum menyelesaikan pendaftaran."
+        android:textColor="@color/lib_text_sub"
+        android:layout_marginBottom="32dp"
+        android:lineSpacingExtra="4dp"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ringkasan Profil"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/desa_secondary"
+                android:layout_marginBottom="16dp"
+                android:textAllCaps="true"/>
+
+            <TextView
+                android:id="@+id/tv_display_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Memuat data..."
+                android:textColor="@color/lib_text_main"
+                android:textSize="16sp"
+                android:lineSpacingExtra="10dp" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Daftar Sekarang"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        android:backgroundTint="@color/desa_primary" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_kembali"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="Kembali untuk Perbaiki"
+        android:textAllCaps="false"
+        android:textColor="@color/lib_text_sub"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>

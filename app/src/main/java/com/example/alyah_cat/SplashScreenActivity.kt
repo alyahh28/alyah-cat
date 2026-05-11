@@ -9,7 +9,7 @@ import com.example.alyah_cat.Home.pertemuan_3.LoginActivity // Pastikan path ini
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SplashScreenActivity : AppCompatActivity() {
+class  SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)

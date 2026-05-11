@@ -12,33 +12,35 @@
         android:layout_height="wrap_content"
         android:paddingBottom="40dp">
 
+        <View
+            android:id="@+id/headerView"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:background="@drawable/bg_header_wave"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/bg_blue_gradient"
+            android:background="@android:color/transparent"
             app:layout_constraintTop_toTopOf="parent"
+            app:title="Profil Saya"
             app:titleTextColor="@android:color/white" />
-
-        <View
-            android:id="@+id/headerBackground"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="#11364A5F"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivProfile"
             android:layout_width="130dp"
             android:layout_height="130dp"
-            android:layout_marginTop="130dp"
+            android:layout_marginTop="120dp"
             android:background="#FFFFFF"
             android:padding="4dp"
             android:scaleType="centerCrop"
             android:src="@drawable/alyah"
+            android:elevation="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/headerBackground"
+            app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/Widget.Material3.CircularProgressIndicator" />
 
         <TextView
@@ -71,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Politeknik Caltex Riau"
-            android:textColor="@color/desa_primary"
+            android:textColor="#0084FF"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
