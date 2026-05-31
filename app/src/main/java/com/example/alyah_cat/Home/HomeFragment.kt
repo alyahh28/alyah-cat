@@ -56,14 +56,25 @@ class HomeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val response = NewsApiClient.apiService.getCnnNews()
-                val sliderData = response.data.filter { it.image?.large != null }.take(5)
+                // Filter lebih fleksibel: ambil yang punya objek image (baik large maupun small)
+                val sliderData = response.data?.filter { it.image != null }?.take(5) ?: emptyList()
 
                 if (sliderData.isNotEmpty()) {
                     val adapter = NewsAdapter(sliderData)
                     binding.viewPagerNews.adapter = adapter
                     binding.newsDotsIndicator.attachTo(binding.viewPagerNews)
 
-                    // Efek Carousel (Peek Effect)
+                    // FIX: Mencegah NestedScrollView mencuri scroll horizontal slider
+                    binding.viewPagerNews.getChildAt(0).overScrollMode = View.OVER_SCROLL_NEVER
+                    
+                    // Beri tahu NestedScrollView untuk tidak menginterupsi saat slider digeser
+                    binding.viewPagerNews.registerOnPageChangeCallback(object : androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
+                        override fun onPageScrollStateChanged(state: Int) {
+                            super.onPageScrollStateChanged(state)
+                            binding.root.requestDisallowInterceptTouchEvent(state != androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE)
+                        }
+                    })
+
                     val transformer = CompositePageTransformer().apply {
                         addTransformer(MarginPageTransformer(40))
                         addTransformer { page, position ->
@@ -73,12 +84,13 @@ class HomeFragment : Fragment() {
                     }
                     binding.viewPagerNews.setPageTransformer(transformer)
                     binding.viewPagerNews.offscreenPageLimit = 3
+                } else {
+                    binding.viewPagerNews.visibility = View.GONE
+                    binding.newsDotsIndicator.visibility = View.GONE
                 }
             } catch (e: Exception) {
                 binding.viewPagerNews.visibility = View.GONE
                 binding.newsDotsIndicator.visibility = View.GONE
-                // Debug log
-                // Toast.makeText(requireContext(), "Gagal muat slider", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -87,17 +99,19 @@ class HomeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val response = NewsApiClient.apiService.getAntaraNews()
-                val listData = response.data.take(10)
+                val listData = response.data?.take(10) ?: emptyList()
 
-                val adapter = NewsListAdapter(listData)
-
-                binding.rvNewsList.apply {
-                    this.adapter = adapter
-                    layoutManager = LinearLayoutManager(requireContext())
-                    isNestedScrollingEnabled = false
+                if (listData.isNotEmpty()) {
+                    val adapter = NewsListAdapter(listData)
+                    binding.rvNewsList.layoutManager = LinearLayoutManager(requireContext())
+                    binding.rvNewsList.adapter = adapter
+                    binding.rvNewsList.isNestedScrollingEnabled = false
+                    binding.rvNewsList.visibility = View.VISIBLE
+                } else {
+                    binding.rvNewsList.visibility = View.GONE
                 }
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Koneksi berita terputus", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(requireContext(), "Gagal memuat kabar desa", Toast.LENGTH_SHORT).show()
             }
         }
     }
