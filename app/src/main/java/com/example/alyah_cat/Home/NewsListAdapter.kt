@@ -22,11 +22,13 @@ class NewsListAdapter(private val list: List<NewsModel>) : RecyclerView.Adapter<
         holder.binding.tvTitleList.text = item.title
         holder.binding.tvDescList.text = item.contentSnippet
 
-        // PERBAIKAN: Menggunakan tanda ?. karena item.image bisa bernilai null
+        // PERBAIKAN: Menggunakan fallback thumbnail jika image.large null
+        val imageUrl = item.image?.large ?: item.thumbnail
+
         Glide.with(holder.itemView.context)
-            .load(item.image?.large)
-            .placeholder(R.drawable.ic_launcher_background) // Gambar sementara saat loading (bisa diganti)
-            .error(R.drawable.ic_launcher_background)       // Gambar jika URL null atau error (bisa diganti)
+            .load(imageUrl)
+            .placeholder(R.drawable.ic_launcher_background)
+            .error(R.drawable.ic_launcher_background)
             .into(holder.binding.imgNewsList)
     }
 

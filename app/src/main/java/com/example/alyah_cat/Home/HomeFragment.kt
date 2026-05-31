@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import com.example.alyah_cat.Home.pertemuan_2.KalkulatorActivity
 import com.example.alyah_cat.Home.pertemuan_3.LoginActivity
 import com.example.alyah_cat.Home.pertemuan_4.Custom1Activity
@@ -38,15 +39,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Setup Toolbar
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
         (requireActivity() as AppCompatActivity).supportActionBar?.title = ""
 
-        // 2. Load Data API (Slider Atas & List Bawah)
         loadNewsSlider()
         loadVerticalNews()
-
-        // 3. Navigasi Tombol
         setupNavigation()
 
         binding.btnLogout.setOnClickListener { showLogoutDialog() }
@@ -56,22 +53,36 @@ class HomeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val response = NewsApiClient.apiService.getCnnNews()
-                // Filter lebih fleksibel: ambil yang punya objek image (baik large maupun small)
-                val sliderData = response.data?.filter { it.image != null }?.take(5) ?: emptyList()
+                // PERBAIKAN: Filter lebih fleksibel (bisa image atau thumbnail)
+                val sliderData = response.data?.filter { it.image != null || it.thumbnail != null }?.take(5) ?: emptyList()
 
                 if (sliderData.isNotEmpty()) {
                     val adapter = NewsAdapter(sliderData)
                     binding.viewPagerNews.adapter = adapter
                     binding.newsDotsIndicator.attachTo(binding.viewPagerNews)
 
-                    // FIX: Mencegah NestedScrollView mencuri scroll horizontal slider
                     binding.viewPagerNews.getChildAt(0).overScrollMode = View.OVER_SCROLL_NEVER
                     
-                    // Beri tahu NestedScrollView untuk tidak menginterupsi saat slider digeser
-                    binding.viewPagerNews.registerOnPageChangeCallback(object : androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
+                    // FIX: Agar slide slider tidak pindah fragment (Konflik ViewPager2)
+                    val recyclerView = binding.viewPagerNews.getChildAt(0) as? androidx.recyclerview.widget.RecyclerView
+                    recyclerView?.apply {
+                        // Memastikan slider menangani swipe horizontal sendiri
+                        addOnItemTouchListener(object : androidx.recyclerview.widget.RecyclerView.OnItemTouchListener {
+                            override fun onInterceptTouchEvent(rv: androidx.recyclerview.widget.RecyclerView, e: android.view.MotionEvent): Boolean {
+                                when (e.action) {
+                                    android.view.MotionEvent.ACTION_MOVE -> rv.parent.requestDisallowInterceptTouchEvent(true)
+                                }
+                                return false
+                            }
+                            override fun onTouchEvent(rv: androidx.recyclerview.widget.RecyclerView, e: android.view.MotionEvent) {}
+                            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+                        })
+                    }
+
+                    binding.viewPagerNews.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                         override fun onPageScrollStateChanged(state: Int) {
                             super.onPageScrollStateChanged(state)
-                            binding.root.requestDisallowInterceptTouchEvent(state != androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE)
+                            binding.viewPagerNews.requestDisallowInterceptTouchEvent(state != ViewPager2.SCROLL_STATE_IDLE)
                         }
                     })
 
@@ -84,34 +95,45 @@ class HomeFragment : Fragment() {
                     }
                     binding.viewPagerNews.setPageTransformer(transformer)
                     binding.viewPagerNews.offscreenPageLimit = 3
+                    binding.viewPagerNews.visibility = View.VISIBLE
+                    binding.newsDotsIndicator.visibility = View.VISIBLE
                 } else {
-                    binding.viewPagerNews.visibility = View.GONE
-                    binding.newsDotsIndicator.visibility = View.GONE
+                    hideSlider()
                 }
             } catch (e: Exception) {
-                binding.viewPagerNews.visibility = View.GONE
-                binding.newsDotsIndicator.visibility = View.GONE
+                hideSlider()
             }
         }
+    }
+
+    private fun hideSlider() {
+        binding.viewPagerNews.visibility = View.GONE
+        binding.newsDotsIndicator.visibility = View.GONE
     }
 
     private fun loadVerticalNews() {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val response = NewsApiClient.apiService.getAntaraNews()
-                val listData = response.data?.take(10) ?: emptyList()
+                val listData = response.data ?: emptyList()
 
                 if (listData.isNotEmpty()) {
-                    val adapter = NewsListAdapter(listData)
+                    val adapter = NewsListAdapter(listData.take(15))
                     binding.rvNewsList.layoutManager = LinearLayoutManager(requireContext())
                     binding.rvNewsList.adapter = adapter
+                    // PENTING: Matikan nested scroll agar RecyclerView memanjang di dalam NestedScrollView
                     binding.rvNewsList.isNestedScrollingEnabled = false
                     binding.rvNewsList.visibility = View.VISIBLE
                 } else {
                     binding.rvNewsList.visibility = View.GONE
+                    if (isAdded) {
+                        Toast.makeText(requireContext(), "Daftar berita kosong", Toast.LENGTH_SHORT).show()
+                    }
                 }
             } catch (e: Exception) {
-                // Toast.makeText(requireContext(), "Gagal memuat kabar desa", Toast.LENGTH_SHORT).show()
+                if (isAdded) {
+                    Toast.makeText(requireContext(), "Gagal memuat berita bawah: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -120,24 +142,19 @@ class HomeFragment : Fragment() {
         binding.btnkalkulator.setOnClickListener {
             startActivity(Intent(requireContext(), KalkulatorActivity::class.java))
         }
-
         binding.btncustom1.setOnClickListener {
             startActivity(Intent(requireContext(), Custom1Activity::class.java))
         }
-
         binding.btnMessage.setOnClickListener {
             val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav_view)
             bottomNav?.selectedItemId = R.id.about
         }
-
         binding.btnwebview.setOnClickListener {
             startActivity(Intent(requireContext(), WebViewActivity::class.java))
         }
-
         binding.btnLayanan.setOnClickListener {
             startActivity(Intent(requireContext(), DelpanActivity::class.java))
         }
-
         binding.btnPerangkat.setOnClickListener {
             val intent = Intent(requireContext(), com.example.alyah_cat.Home.pertemuan_10.TenthActivity::class.java)
             startActivity(intent)

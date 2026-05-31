@@ -20,9 +20,11 @@ class NewsAdapter(private val list: List<NewsModel>) : RecyclerView.Adapter<News
         val item = list[position]
         holder.binding.tvNewsTitle.text = item.title
         
-        // Menggunakan safe call ?.large dan placeholder agar tidak error jika gambar kosong
+        // PERBAIKAN: Gunakan thumbnail sebagai fallback jika image.large null
+        val imageUrl = item.image?.large ?: item.thumbnail
+        
         Glide.with(holder.itemView.context)
-            .load(item.image?.large)
+            .load(imageUrl)
             .placeholder(R.drawable.bg_blue_gradient)
             .error(R.drawable.bg_blue_gradient)
             .into(holder.binding.imgNews)
