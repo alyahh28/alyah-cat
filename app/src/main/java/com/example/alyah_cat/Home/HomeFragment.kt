@@ -8,24 +8,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.CompositePageTransformer
+import androidx.viewpager2.widget.MarginPageTransformer
 import com.example.alyah_cat.Home.pertemuan_2.KalkulatorActivity
 import com.example.alyah_cat.Home.pertemuan_3.LoginActivity
 import com.example.alyah_cat.Home.pertemuan_4.Custom1Activity
 import com.example.alyah_cat.Home.pertemuan_4.WebViewActivity
 import com.example.alyah_cat.Home.pertemuan_8.DelpanActivity
+import com.example.alyah_cat.data.api.NewsApiClient
 import com.example.alyah_cat.R
 import com.example.alyah_cat.databinding.FragmentHomeBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -33,47 +38,88 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Setup Judul Toolbar melalui BaseActivity (agar tidak bentrok)
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = "Dashboard Bina Desa"
+        // 1. Setup Toolbar
+        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = ""
 
-        // Jika Anda ingin menyembunyikan toolbar bawaan fragment ini karena sudah ada toolbar dari BaseActivity,
-        // Anda bisa uncomment kode di bawah ini:
-        // binding.toolbar.visibility = View.GONE
+        // 2. Load Data API (Slider Atas & List Bawah)
+        loadNewsSlider()
+        loadVerticalNews()
 
-        // 2. Navigasi Card Click Listener
+        // 3. Navigasi Tombol
+        setupNavigation()
 
-        // Kalkulator (Pertemuan 2)
+        binding.btnLogout.setOnClickListener { showLogoutDialog() }
+    }
+
+    private fun loadNewsSlider() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val response = NewsApiClient.apiService.getCnnNews()
+                val sliderData = response.data.filter { it.image?.large != null }.take(5)
+
+                if (sliderData.isNotEmpty()) {
+                    val adapter = NewsAdapter(sliderData)
+                    binding.viewPagerNews.adapter = adapter
+                    binding.newsDotsIndicator.attachTo(binding.viewPagerNews)
+
+                    // Efek Carousel (Peek Effect)
+                    val transformer = CompositePageTransformer().apply {
+                        addTransformer(MarginPageTransformer(40))
+                        addTransformer { page, position ->
+                            val r = 1 - Math.abs(position)
+                            page.scaleY = 0.85f + r * 0.15f
+                        }
+                    }
+                    binding.viewPagerNews.setPageTransformer(transformer)
+                    binding.viewPagerNews.offscreenPageLimit = 3
+                }
+            } catch (e: Exception) {
+                binding.viewPagerNews.visibility = View.GONE
+                binding.newsDotsIndicator.visibility = View.GONE
+                // Debug log
+                // Toast.makeText(requireContext(), "Gagal muat slider", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun loadVerticalNews() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val response = NewsApiClient.apiService.getAntaraNews()
+                val listData = response.data.take(10)
+
+                val adapter = NewsListAdapter(listData)
+
+                binding.rvNewsList.apply {
+                    this.adapter = adapter
+                    layoutManager = LinearLayoutManager(requireContext())
+                    isNestedScrollingEnabled = false
+                }
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Koneksi berita terputus", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setupNavigation() {
         binding.btnkalkulator.setOnClickListener {
             startActivity(Intent(requireContext(), KalkulatorActivity::class.java))
         }
 
-        // Profile (Pertemuan 4 - Custom 1)
         binding.btncustom1.setOnClickListener {
             startActivity(Intent(requireContext(), Custom1Activity::class.java))
         }
 
-        // PERBAIKAN: Message -> Membuka MessageFragment menggunakan viewPager parentActivity
         binding.btnMessage.setOnClickListener {
-            // Karena fragment_container sudah diganti dengan ViewPager2 di BaseActivity,
-            // Jika Anda ingin tombol ini memicu perpindahan ke halaman tertentu (misal halaman About/lainnya),
-            // Anda bisa memanggil viewPager dari activity seperti ini:
-            val viewPager = requireActivity().findViewById<androidx.viewpager2.widget.ViewPager2>(R.id.viewPager)
-
-            // Contoh: Menggeser paksa ke halaman indeks ke-1 (Halaman About) atau sesuaikan kebutuhan Anda
-            viewPager.currentItem = 1
-
-            /* CATATAN: Jika MessageFragment ingin dijadikan Activity tersendiri agar bisa dibuka menumpuk,
-            sangat disarankan mengubah MessageFragment menjadi MessageActivity, lalu dipanggil menggunakan:
-            startActivity(Intent(requireContext(), MessageActivity::class.java))
-            */
+            val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav_view)
+            bottomNav?.selectedItemId = R.id.about
         }
 
-        // Web View (Pertemuan 4)
         binding.btnwebview.setOnClickListener {
             startActivity(Intent(requireContext(), WebViewActivity::class.java))
         }
 
-        // Layanan Bina Desa -> Masuk ke DelpanActivity (Pertemuan 8)
         binding.btnLayanan.setOnClickListener {
             startActivity(Intent(requireContext(), DelpanActivity::class.java))
         }
@@ -82,24 +128,16 @@ class HomeFragment : Fragment() {
             val intent = Intent(requireContext(), com.example.alyah_cat.Home.pertemuan_10.TenthActivity::class.java)
             startActivity(intent)
         }
-
-        // 3. Logika Logout
-        binding.btnLogout.setOnClickListener {
-            showLogoutDialog()
-        }
     }
 
     private fun showLogoutDialog() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Konfirmasi Logout")
-            .setMessage("Apakah Anda yakin ingin keluar dari layanan Bina Desa?")
+            .setTitle("Logout")
+            .setMessage("Yakin ingin keluar?")
             .setPositiveButton("Ya") { _, _ ->
-                val sharedPref = requireContext().getSharedPreferences("USER_PREF", Context.MODE_PRIVATE)
+                val sharedPref = requireContext().getSharedPreferences("user_pref", Context.MODE_PRIVATE)
                 sharedPref.edit().clear().apply()
-
-                val intent = Intent(requireContext(), LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
+                startActivity(Intent(requireContext(), LoginActivity::class.java))
                 requireActivity().finish()
             }
             .setNegativeButton("Batal", null)

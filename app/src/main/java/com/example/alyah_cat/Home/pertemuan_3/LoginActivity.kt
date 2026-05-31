@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
             if (isDefaultLogin || isRegisteredLogin) {
                 // Simpan status login
                 sharedPref.edit().apply {
-                    putBoolean("isLogin", true)
+                    putBoolean("isLogin", true) // Baris ini harus ada
                     putString("username", usernameInput)
                     apply()
                 }

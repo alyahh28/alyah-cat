@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Alyahcat"
         tools:targetApi="31">
         <activity
+            android:name=".Home.pertemuan_11.OnboardingActivity"
+            android:exported="false"/>
+        <activity
             android:name=".Home.pertemuan_10.TenthActivity"
             android:exported="false" />
         <activity
