@@ -48,6 +48,10 @@ class TenthActivity : AppCompatActivity() {
                     badge.isVisible = true
                     badge.number = 4
                 }
+                2 -> {
+                    tab.text = "Data Warga" // Judul untuk TabC
+                    tab.icon = ContextCompat.getDrawable(this, R.drawable.ic_profile)
+                }
             }
         }.attach()
     }

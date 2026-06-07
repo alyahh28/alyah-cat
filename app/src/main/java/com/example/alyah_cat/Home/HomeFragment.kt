@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import com.example.alyah_cat.Home.Message.MessageFragment
 import com.example.alyah_cat.Home.pertemuan_2.KalkulatorActivity
 import com.example.alyah_cat.Home.pertemuan_3.LoginActivity
 import com.example.alyah_cat.Home.pertemuan_4.Custom1Activity
@@ -135,8 +136,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnMessage.setOnClickListener {
-            val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav_view)
-            bottomNav?.selectedItemId = R.id.message
+            startActivity(Intent(requireContext(), MessageFragment::class.java))
         }
 
         binding.btnwebview.setOnClickListener {

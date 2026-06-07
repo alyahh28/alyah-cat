@@ -50,7 +50,7 @@ class BaseActivity : AppCompatActivity() {
                     binding.viewPager.currentItem = 3
                     true
                 }
-                R.id.message -> {
+                R.id.note -> {
                     binding.viewPager.currentItem = 4 // Halaman Message (index 4)
                     true
                 }
@@ -82,7 +82,7 @@ class BaseActivity : AppCompatActivity() {
                         supportActionBar?.title = "Profil Pengembang"
                     }
                     4 -> {
-                        binding.bottomNavView.selectedItemId = R.id.message
+                        binding.bottomNavView.selectedItemId = R.id.note
                         supportActionBar?.title = "Pesan Bina Desa"
                     }
                 }

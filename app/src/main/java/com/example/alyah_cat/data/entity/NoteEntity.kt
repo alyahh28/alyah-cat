@@ -9,4 +9,4 @@ data class NoteEntity(
     val title: String,
     val content: String,
     val createdAt: Long
-)
+)   

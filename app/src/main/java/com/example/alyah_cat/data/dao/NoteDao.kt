@@ -16,5 +16,5 @@ interface NoteDao {
     suspend fun getAllNotes(): List<NoteEntity>
 
     @Delete
-    suspend fun deleteNote(note: NoteEntity) // <--- Pastikan lurus seperti ini, tidak ada ": Void" atau ": Unit" di ujungnya
+    suspend fun deleteNote(note: NoteEntity)
 }
