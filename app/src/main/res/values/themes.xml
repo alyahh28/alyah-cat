@@ -1,11 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Alyahcat" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Definisi warna dasar Material 3 -->
+        <item name="colorPrimary">#6750A4</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#EADDFF</item>
+        <item name="colorOnPrimaryContainer">#21005D</item>
+        <item name="android:windowBackground">#F8FAFC</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
     </style>
 
     <style name="Theme.Alyahcat" parent="Base.Theme.Alyahcat" />
+
     <style name="RoundedSquare" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">20dp</item>

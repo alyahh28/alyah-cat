@@ -8,7 +8,7 @@ data class NewsModel(
     val title: String?,
     val link: String?,
     val contentSnippet: String?,
-    val image: NewsImage?,
+        val image: NewsImage?,
     val thumbnail: String?
 )
 

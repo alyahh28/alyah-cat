@@ -15,8 +15,15 @@
         android:theme="@style/Theme.Alyahcat"
         tools:targetApi="31">
         <activity
+            android:name=".Home.pertemuan_10.AddPerangkatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Note.NoteFormActivity"
+            android:theme="@style/Theme.Alyahcat"
+            android:exported="false" />
+        <activity
             android:name=".Home.pertemuan_11.OnboardingActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".Home.pertemuan_10.TenthActivity"
             android:exported="false" />
